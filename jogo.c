@@ -14,13 +14,24 @@ void cabecalho(){
     printf("==============================\n\n");
 }
 
+void registrar_jogadores(char * player1, char * player2){
+    printf("Qual o nome do primeiro jogador: \n");
+    scanf(" %50[^\n]", player1);
+    printf("Qual o nome do segundo jogador: \n");
+    scanf(" %50[^\n]", player2);
+}
+
 int main(){
 
     char tabuleiro[3][3];
+    char player1[51];
+    char player2[51];
 
     criar_tabuleiro(tabuleiro);
 
     cabecalho();
+
+    registrar_jogadores(player1, player2);
 
     return 0;
 }
