@@ -21,6 +21,20 @@ void registrar_jogadores(char * player1, char * player2){
     scanf(" %50[^\n]", player2);
 }
 
+void mostrar_tabuleiro(char tabuleiro[3][3]) {
+    printf("\n");
+
+    for(int i = 0; i < 3; i++) {
+        printf(" %c | %c | %c \n",tabuleiro[i][0],tabuleiro[i][1], tabuleiro[i][2]);
+        
+        if(i < 2) {
+            printf("---+---+---\n");
+        }
+    }
+
+    printf("\n");
+}
+
 int main(){
 
     char tabuleiro[3][3];
@@ -32,6 +46,8 @@ int main(){
     cabecalho();
 
     registrar_jogadores(player1, player2);
+
+    mostrar_tabuleiro(tabuleiro);
 
     return 0;
 }
