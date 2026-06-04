@@ -1,53 +1,83 @@
 #include <stdio.h>
-
-void criar_tabuleiro(char tabuleiro[3][3]){
-    for(int i = 0; i < 3; i++){
-        for(int j = 0; j < 3; j++){
-            tabuleiro[i][j] = ' ';
-        }
-    }
-}
+#include "jogo.h"
 
 void cabecalho(){
     printf("==============================\n");
-    printf("  BEM VINDO AO JOGO DA VELHA\n");
+    printf("  BEM VINDO AO JOGO DA VELHA  \n");
     printf("==============================\n\n");
 }
 
-void registrar_jogadores(char * player1, char * player2){
-    printf("Qual o nome do primeiro jogador: \n");
-    scanf(" %50[^\n]", player1);
-    printf("Qual o nome do segundo jogador: \n");
-    scanf(" %50[^\n]", player2);
+void registrar_jogadores(Jogador *j1, Jogador *j2){
+    printf("Nome do primeiro jogador (X): \n");
+    scanf(" %50[^\n]", j1->nome);
+    j1->simbolo = 'X';
+
+    printf("Nome do segundo jogador (O): \n");
+    scanf(" %50[^\n]", j2->nome);
+    j2->simbolo = 'O';
 }
 
-void mostrar_tabuleiro(char tabuleiro[3][3]) {
-    printf("\n");
-
-    for(int i = 0; i < 3; i++) {
-        printf(" %c | %c | %c \n",tabuleiro[i][0],tabuleiro[i][1], tabuleiro[i][2]);
-        
-        if(i < 2) {
-            printf("---+---+---\n");
+void criar_tabuleiro(Tabuleiro *t){
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            t->casas[i][j] = ' ';
         }
     }
+    t->jogos_restantes = TOTAL_CASAS;
+}
 
+void mostrar_tabuleiro(Tabuleiro *t){
     printf("\n");
+    for(int i = 0; i < 3; i++){
+        printf(" %c | %c | %c \n", t->casas[i][0], t->casas[i][1], t->casas[i][2]);
+        if(i < 2) printf("---+---+---\n");
+    }
+    printf("\n");
+}
+
+void limpar_buffer(){
+    int c;
+    while((c = getchar()) != '\n' && c != EOF);
+}
+
+void entrada(Tabuleiro *t, Jogador *atual){
+    int linha, coluna, valido, jogou;
+
+    do {
+        printf("Vez de %s (%c)\n", atual->nome, atual->simbolo);
+
+        do{
+            printf("Linha e coluna (0 a 2): \n");
+            valido = (scanf("%d %d", &linha, &coluna) == 2 && linha >= 0 && linha <= 2 && coluna >= 0 && coluna <= 2);
+            limpar_buffer();
+
+            if(!valido) printf("Invalido. Digite dois numeros inteiros entre 0 e 2.\n");
+        } while(!valido);
+
+        jogou = fazer_jogada(t, atual, linha, coluna);
+
+        if(!jogou) printf("Posicao ocupada, tente novamente.\n");
+
+    } while(!jogou);
+}
+
+int fazer_jogada(Tabuleiro *t, Jogador *atual, int linha, int coluna){
+    if(t->casas[linha][coluna] == ' '){
+        t->casas[linha][coluna] = atual->simbolo;
+        t->jogos_restantes--;
+        return 1;
+    }
+
+    return 0;
 }
 
 int main(){
 
-    char tabuleiro[3][3];
-    char player1[51];
-    char player2[51];
-
-    criar_tabuleiro(tabuleiro);
+    Jogador j1,j2;
 
     cabecalho();
-
-    registrar_jogadores(player1, player2);
-
-    mostrar_tabuleiro(tabuleiro);
+    registrar_jogadores(&j1, &j2);
+    jogar(&j1, &j2);
 
     return 0;
 }
