@@ -84,13 +84,37 @@ char verificar_vitoria(Tabuleiro *t){
     return ' ';
 }
 
+void joga(Jogador *j1, Jogador *j2){
+    Tabuleiro t;
+    criar_tabuleiro(&t);
+
+    Jogador *jogadores[2] = {j1, j2};
+    int turno = 0;
+    char vencedor;
+
+    do{
+        mostrar_tabuleiro(&t);
+        entrada(&t, jogadores[turno]);
+        vencedor = verificar_vitoria(&t);
+        turno = 1 - turno;
+
+    } while(vencedor == ' ' && t.jogos_restantes != 0);
+
+    mostrar_tabuleiro(&t);
+
+    if(vencedor != ' ')
+        printf("%s venceu!\n", jogadores[1 - turno]->nome);
+    else
+        printf("Deu Velha!\n");
+}
+
 int main(){
 
     Jogador j1,j2;
 
     cabecalho();
     registrar_jogadores(&j1, &j2);
-    jogar(&j1, &j2);
+    joga(&j1, &j2);
 
     return 0;
 }
