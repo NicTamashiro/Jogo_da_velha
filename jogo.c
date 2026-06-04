@@ -72,15 +72,14 @@ int fazer_jogada(Tabuleiro *t, Jogador *atual, int linha, int coluna){
 }
 
 char verificar_vitoria(Tabuleiro *t){
-    char (*c)[3] = t->casas;
 
     for(int i = 0; i < 3; i++){
-        if(c[i][0] != ' ' && c[i][0] == c[i][1] && c[i][1] == c[i][2]) return c[i][0];
-        if(c[0][i] != ' ' && c[0][i] == c[1][i] && c[1][i] == c[2][i]) return c[0][i];
+        if(t->casas[i][0] != ' ' && t->casas[i][0] == t->casas[i][1] && t->casas[i][1] == t->casas[i][2]) return t->casas[i][0];
+        if(t->casas[0][i] != ' ' && t->casas[0][i] == t->casas[1][i] && t->casas[1][i] == t->casas[2][i]) return t->casas[0][i];
     }
 
-    if(c[0][0] != ' ' && c[0][0] == c[1][1] && c[1][1] == c[2][2]) return c[0][0];
-    if(c[0][2] != ' ' && c[0][2] == c[1][1] && c[1][1] == c[2][0]) return c[0][2];
+    if(t->casas[0][0] != ' ' && t->casas[0][0] == t->casas[1][1] && t->casas[1][1] == t->casas[2][2]) return t->casas[0][0];
+    if(t->casas[0][2] != ' ' && t->casas[0][2] == t->casas[1][1] && t->casas[1][1] == t->casas[2][0]) return t->casas[0][2];
 
     return ' ';
 }
